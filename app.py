@@ -13,31 +13,21 @@ debug = DebugToolbarExtension(app)
 
 @app.get('/')
 def index():
-    """Return homepage"""
+    """Return homepage with form to collect answers to prompts"""
 
-    html = render_template(
+    return render_template(
         'questions.html',
         prompts=STORY.prompts)
-
-    return html
 
 @app.get('/results')
 def show_results():
     """Return resulting story for user-provided answers"""
 
     prompts = STORY.prompts
-    template = STORY.template
-
-    # create dictionary of {prompts: answers} from inputs
-    answers = {}
-    for prompt in prompts:
-        answers[prompt] = request.args[prompt]
 
     # generate string of resulting story
-    result = STORY.generate(answers)
+    result = STORY.generate(request.args)
 
-    html = render_template(
+    return render_template(
         'results.html',
-        result_story=result)
-
-    return html
+        result=result)
