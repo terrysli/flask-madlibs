@@ -4,7 +4,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from stories import silly_story
 from stories import excited_story
 
-STORY = excited_story
+STORY = silly_story
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "secret"
@@ -23,7 +23,7 @@ def index():
 
 @app.get('/results')
 def show_results():
-    """Return resulting STORY for user-provided answers"""
+    """Return resulting story for user-provided answers"""
 
     prompts = STORY.prompts
     template = STORY.template
@@ -33,6 +33,7 @@ def show_results():
     for prompt in prompts:
         answers[prompt] = request.args[prompt]
 
+    # generate string of resulting story
     result = STORY.generate(answers)
 
     html = render_template(
